@@ -6,7 +6,7 @@ const SYMBOL_SIZE = 115;
 const WON_PRIZE = 5;
 const SPIN_COST = 1;
 const REEL_SIZE = 10;
-let credits = 15;
+let credits = 3;
 let running = false;
 let selectedIndex = 0;
 let actualIndex = 1;
@@ -120,6 +120,7 @@ function onSpin(){
   btnSpin.tint = 0x808080;
   if(credits == 0) return;
   if (running) return;
+  selection.tint = 0xCCCCCC;
   running = true;
   resultText.text = '';
   credits -= SPIN_COST;  
@@ -130,13 +131,14 @@ function onSpin(){
   const extraSlots = Math.floor(Math.random()*3); 
   getNewIndex(extraSlots);
   const target = r.position + (REEL_SIZE * spins) - extraSlots;
-  const time = 3000 + spins * 600; 
+  const time = 2000 + spins * 600; 
   r.symbols[actualIndex].texture = slotTextures[result.draw]; // reemplaza la textura 
   tweenTo(r, 'position', target, time, backout(0.3), null, reelsComplete);
 }
 function reelsComplete() {
   running = false;
   if(credits>0) btnSpin.tint = 0xFFFFFF;
+  selection.tint = 0xFFFFFF;
   if (result.won) onWin();
   else onLose();
 }
@@ -145,16 +147,15 @@ function onWin(){
   credits += WON_PRIZE;
 }
 function onLose(){
-  if(credits == 0){
-    resultText.text = 'Perdiste! Agrega creditos para seguir jugando'
-  }
-  resultText.text = 'Perdiste!'
+  if(credits == 0) resultText.text = 'Perdiste! Agrega creditos para seguir jugando'
+    else resultText.text = 'Perdiste!'
 }
 function onAddCredits() {
-  btnSpin.tint = 0xFFFFFF;
+  if(!running) btnSpin.tint = 0xFFFFFF;
   credits += 10;
 }
 function onChangeSelection(){
+  if(running) return;
   selectionContainer.removeChild(selection);
   selectedIndex++
   if(selectedIndex >= slotTextures.length) selectedIndex=0;
