@@ -1,5 +1,4 @@
 # LuckyRabbitChallenge
 Slot simulation using Pixi js & tween  
--npm install
--npm run start
-
+```bash npm install```
+```bash npm run star```
