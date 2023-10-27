@@ -15,20 +15,21 @@ let app = new Application({ background: 0xFFFFFF});
 document.querySelector('body').appendChild(app.view);
 let clientHeight = app.view.height;
 let clientWidth = app.view.width;
-let resultText = new PIXI.Text('Elige una fruta y gira la rueda! Buena Suerte!!',{fontFamily : 'Arial', fontSize: 36, fill : 0xfcdd55, align : 'center', dropShadow:true, dropShadowAlpha:0.4, dropShadowBlur:1,});
+let resultText = new PIXI.Text('Elige una fruta y gira la rueda!',{fontFamily : 'Arial', fontSize: 36,fontWeight:'bolder', fill : 0xfcdd55, align : 'center', dropShadow:true, dropShadowAlpha:0.4, dropShadowBlur:1,});
 let creditsText = new PIXI.Text(credits,{fontFamily : 'Arial', fontSize: 30, fill : 0xffffff, align : 'center'});
 let clickText = new PIXI.Text('Toca la fruta para cambiar',{fontFamily : 'Arial', fontSize: 26, fill : 0xffffff, align : 'center'});
-
-const slotTextures = [
-  PIXI.Texture.from('./assets/symbol-1.png'),
-  PIXI.Texture.from('./assets/symbol-2.png'),
-  PIXI.Texture.from('./assets/symbol-3.png'),
-  PIXI.Texture.from('./assets/symbol-4.png'),
-  PIXI.Texture.from('./assets/symbol-5.png'),
-  PIXI.Texture.from('./assets/symbol-6.png'),
-  PIXI.Texture.from('./assets/symbol-7.png'),
-  PIXI.Texture.from('./assets/symbol-8.png'),
-];
+// array original de assets, si tuvieran nombres no seriados
+// const slotTextures = [
+//   PIXI.Texture.from('./assets/symbol-1.png'),
+//   PIXI.Texture.from('./assets/symbol-2.png'),
+//   PIXI.Texture.from('./assets/symbol-3.png'),
+//   PIXI.Texture.from('./assets/symbol-4.png'),
+//   PIXI.Texture.from('./assets/symbol-5.png'),
+//   PIXI.Texture.from('./assets/symbol-6.png'),
+//   PIXI.Texture.from('./assets/symbol-7.png'),
+//   PIXI.Texture.from('./assets/symbol-8.png'),
+// ];
+const slotTextures = Array.from({ length: 8 }, (_, i) => PIXI.Texture.from(`./assets/symbol-${i + 1}.png`));
 
 let bg = PIXI.Sprite.from('./assets/bg.png');
 bg.width = clientWidth;
@@ -147,7 +148,7 @@ function onWin() {
   credits += WON_PRIZE;
 }
 function onLose() {
-  if(credits == 0) resultText.text = 'Perdiste! Agrega creditos para seguir jugando'
+  if(credits == 0) resultText.text = 'Perdiste! Agrega mas creditos'
     else resultText.text = 'Perdiste!'
 }
 function onAddCredits() {
