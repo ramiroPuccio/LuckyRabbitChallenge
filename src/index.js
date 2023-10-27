@@ -116,7 +116,7 @@ function getNewIndex(extra) {
     actualIndex -= REEL_SIZE;
   }
 }
-function onSpin(){
+function onSpin() {
   btnSpin.tint = 0x808080;
   if(credits == 0) return;
   if (running) return;
@@ -131,7 +131,7 @@ function onSpin(){
   const extraSlots = Math.floor(Math.random()*3); 
   getNewIndex(extraSlots);
   const target = r.position + (REEL_SIZE * spins) - extraSlots;
-  const time = 2000 + spins * 600; 
+  const time = 3000 + spins * 600; 
   r.symbols[actualIndex].texture = slotTextures[result.draw]; // reemplaza la textura 
   tweenTo(r, 'position', target, time, backout(0.3), null, reelsComplete);
 }
@@ -142,11 +142,11 @@ function reelsComplete() {
   if (result.won) onWin();
   else onLose();
 }
-function onWin(){
+function onWin() {
   resultText.text = 'Ganaste!!'
   credits += WON_PRIZE;
 }
-function onLose(){
+function onLose() {
   if(credits == 0) resultText.text = 'Perdiste! Agrega creditos para seguir jugando'
     else resultText.text = 'Perdiste!'
 }
@@ -154,7 +154,7 @@ function onAddCredits() {
   if(!running) btnSpin.tint = 0xFFFFFF;
   credits += 10;
 }
-function onChangeSelection(){
+function onChangeSelection() {
   if(running) return;
   selectionContainer.removeChild(selection);
   selectedIndex++
@@ -164,21 +164,20 @@ function onChangeSelection(){
 }
 
 const tweening = [];
-function tweenTo(object, property, target, time, easing, onchange, oncomplete)
-{
-    const tween = {
-        object,
-        property,
-        propertyBeginValue: object[property],
-        target,
-        easing,
-        time,
-        change: onchange,
-        complete: oncomplete,
-        start: Date.now(),
-    };
-    tweening.push(tween);
-    return tween;
+function tweenTo(object, property, target, time, easing, onchange, oncomplete) {
+  const tween = {
+      object,
+      property,
+      propertyBeginValue: object[property],
+      target,
+      easing,
+      time,
+      change: onchange,
+      complete: oncomplete,
+      start: Date.now(),
+  };
+  tweening.push(tween);
+  return tween;
 }
 
   // Actualizar animacion de posiciones de cada elemento
@@ -194,8 +193,7 @@ app.ticker.add((delta) => {
   const now = Date.now();
   const remove = [];
 
-  for (let i = 0; i < tweening.length; i++)
-  {
+  for (let i = 0; i < tweening.length; i++) {
     const t = tweening[i];
     const phase = Math.min(1, (now - t.start) / t.time);
     t.object[t.property] = lerp(t.propertyBeginValue, t.target, t.easing(phase));
@@ -211,11 +209,9 @@ app.ticker.add((delta) => {
   }
 });
 
-function lerp(a1, a2, t)
-{
-    return a1 * (1 - t) + a2 * t;
+function lerp(a1, a2, t) {
+  return a1 * (1 - t) + a2 * t;
 }
-function backout(amount)
-{
-    return (t) => (--t * t * ((amount + 1) * t + amount) + 1);
+function backout(amount) {
+  return (t) => (--t * t * ((amount + 1) * t + amount) + 1);
 }
